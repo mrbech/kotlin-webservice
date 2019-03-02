@@ -1,0 +1,28 @@
+version: '3'
+services:
+    backend:
+        ports:
+            - "127.0.0.1:3000:3000"
+        build:
+            context: .
+            args:
+                PROJECT_DIR: ${PROJECT_DIR}
+        volumes:
+            - .:${PROJECT_DIR}/kotlin-webservice
+        command: ./gradlew run
+    kotlin-language-server:
+        volumes:
+            - .:${PROJECT_DIR}/kotlin-webservice
+        build:
+            context: .
+            args:
+                PROJECT_DIR: ${PROJECT_DIR}
+        working_dir: /KotlinLanguageServer/build/install/kotlin-language-server/bin
+        command: ./kotlin-language-server
+    database:
+        image: postgres:11
+        ports:
+            - 5432:5432
+        environment:
+            POSTGRES_USER: todo
+            POSTGRES_PASSWORD: todo
